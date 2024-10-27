@@ -56,10 +56,7 @@ class _FunctionActionCaseDragAndDropState extends DragAndDropItemState {
   onStaticItemTap() => () {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
-    // final Offset offset = Offset(20, 150);
     context.read<FunctionsBloc>().add(FunctionsEventMenuPop(actionPosition: widget.position));
-    // printRed('_FunctionActionCaseDragAndDropState.onStaticItemTap - screen $');
-    printRed('_FunctionActionCaseDragAndDropState.onStaticItemTap - offset $offset');
     showCustomMenuPopup(context, child: ActionMenuWidget(actionToModifyPosition: widget.position), origin: offset);
   };
 
