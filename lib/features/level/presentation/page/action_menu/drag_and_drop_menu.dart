@@ -36,7 +36,6 @@ class _MenuActionCaseDragAndDropState extends DragAndDropItemState {
 
   @override
   void onTargetAccept() {
-    printRed('_MenuActionCaseDragAndDropState._onTargetAccept - ');
     Navigator.of(context).pop();
     context.read<FunctionsBloc>().add(FunctionsEventMergeActions(actionTargeted: widget.action));
     setState(() => itemOnTopState = false);
@@ -47,11 +46,10 @@ class _MenuActionCaseDragAndDropState extends DragAndDropItemState {
 
   @override
   void onDragCanceled() => mounted ? context.read<FunctionsBloc>().add(FunctionsEventMenuDragCanceled())
-      : printRed('_MenuActionCaseDragAndDropState.onDragCanceled can not add event');
+      : Log.red('_MenuActionCaseDragAndDropState.onDragCanceled can not add event');
 
   @override
   onStaticItemTap() => () {
-    printRed('_MenuActionCaseDragAndDropState._onStaticItemTap - ');
     context.read<FunctionsBloc>().add(FunctionsEventMenuSelectAction(actionSelected: widget.action));
     Navigator.of(context).pop();
   };

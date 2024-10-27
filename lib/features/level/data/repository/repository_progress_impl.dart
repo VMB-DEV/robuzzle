@@ -17,7 +17,6 @@ class ProgressRepositoryImpl implements ProgressRepository {
 
   @override
   void setProgress(ProgressModel progressModel) {
-    Log.white('ProgressRepositoryImpl.setProgress - p ${progressModel.toString()}');
     progressDataSource.setProgress(progressModel);
   }
 

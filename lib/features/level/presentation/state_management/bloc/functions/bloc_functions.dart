@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:robuzzle/core/log/consolColors.dart';
 import 'package:robuzzle/features/level/domain/entities/progress/action/entity_action.dart';
 import 'package:robuzzle/features/level/domain/entities/progress/action/entity_case_color.dart';
 import 'package:robuzzle/features/level/domain/entities/progress/entity_functions.dart';
@@ -199,12 +198,6 @@ class FunctionsBloc extends Bloc<FunctionsEvent, FunctionsState> {
   Future<void> _dragCanceled(FunctionsEventDragCanceled event, Emitter<FunctionsState> emit) async {
     print('FunctionsBloc._dragCanceled - ');
     try {
-      // if (state is FunctionsStateMenuPopup) {
-      //   printGreen('FunctionsBloc._dragCanceled - FunctionsStateMenuPopup');
-      //   final currentState = state as FunctionsStateMenuPopup;
-      //   emit(FunctionsStateMenuPopup(functions: currentState.functions.copy, actionPositionStored: currentState.actionPositionStored));
-      // } else {
-        printRed('FunctionsBloc._dragCanceled - FunctionsStateWithPosition');
         final currentState = state as FunctionsStateWithPosition;
         emit(FunctionsStateUpdated(functions: currentState.functions.copy));
       // }

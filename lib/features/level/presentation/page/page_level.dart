@@ -35,14 +35,12 @@ class LevelPage extends StatelessWidget {
   Widget build(BuildContext context) => BlocConsumer<LevelBloc, LevelState>(
     listener: (context, state) {},
     builder: (context, state) {
-      Log.yellow('LevelPage.build - ');
       switch (state) {
         case LevelStateError():
           return ErrorWidget(state.message);
         case LevelStateLoading():
           return _loadLevelAndDisplayLayout(context);
         case LevelStateLoaded(): {
-          Log.yellow('LevelPage.build - ${state.runtimeType} ');
           if ( state.level.id == id) {
             return const LevelLayout(
               mapView: MapView(),

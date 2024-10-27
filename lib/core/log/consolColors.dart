@@ -25,17 +25,10 @@ void logColored(String str, {String color = ConsoleColor.reset}) {
   log('$color$str${ConsoleColor.reset}');
 }
 
-void logB(String str) => logColored(str, color: ConsoleColor.blue);
-
 String strRed(String str) => '${ConsoleColor.red}$str${ConsoleColor.reset}';
 String strBlue(String str) => '${ConsoleColor.blue}$str${ConsoleColor.reset}';
 String strGreen(String str) => '${ConsoleColor.green}$str${ConsoleColor.reset}';
 String strYellow(String str) => '${ConsoleColor.yellow}$str${ConsoleColor.reset}';
-
-void printBlue(String str) => print(strBlue(str));
-void printRed(String str) => print(strRed(str));
-void printGreen(String str) => print(strGreen(str));
-void printYellow(String str) => print(strYellow(str));
 
 class Log {
   static const String _reset = '\x1B[0m';

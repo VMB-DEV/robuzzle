@@ -21,7 +21,6 @@ class PuzzleListPage extends StatelessWidget {
   const PuzzleListPage({required this.difficulty, super.key});
 
   Widget _loadPuzzleListDisplayLayout(BuildContext context) {
-    Log.grey('PuzzleListPage._loadPuzzleListDisplayLayout - ');
     context.read<PuzzleListBloc>().add(PuzzleListEventLoad(difficulty: difficulty));
     return PuzzleListLayout(difficulty: difficulty,);
 
@@ -36,10 +35,8 @@ class PuzzleListPage extends StatelessWidget {
         case PuzzleListStateStateError(): return ErrorWidget(state.message);
         case PuzzleListStateLoaded(): {
           if (state.difficulty == difficulty) {
-            Log.white('PuzzleListPage.build - diff');
             return PuzzleListLayout(difficulty: difficulty, list: true,);
           } else {
-            Log.white('PuzzleListPage.build - load');
             return _loadPuzzleListDisplayLayout(context);
           }
         }

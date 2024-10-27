@@ -41,7 +41,6 @@ class PuzzleListBloc extends Bloc<PuzzleListEvent, PuzzleListState> {
   /// also removing the id from the local data source
   void _removeFav(PuzzleListEventRemoveFav event, Emitter<PuzzleListState> emit) {
     try {
-      Log.grey('PuzzleListBloc._removeFav - ');
       final currentState = state as PuzzleListStateLoaded;
       final PuzzleListEntity newFavorite = currentState.list.singleWhere((e) => e.puzzle.id == event.id);
       final List<PuzzleListEntity> newFavorites = currentState.favorites.copy;
@@ -71,7 +70,6 @@ class PuzzleListBloc extends Bloc<PuzzleListEvent, PuzzleListState> {
   /// also adding the id from the local data source
   void _addFav(PuzzleListEventAddFav event, Emitter<PuzzleListState> emit) {
     try {
-      Log.grey('PuzzleListBloc._addFav - ');
       final currentState = state as PuzzleListStateLoaded;
       final PuzzleListEntity newFavorite = currentState.list.singleWhere((e) => e.puzzle.id == event.id);
       final List<PuzzleListEntity> newFavorites = currentState.favorites.copy;
@@ -101,7 +99,6 @@ class PuzzleListBloc extends Bloc<PuzzleListEvent, PuzzleListState> {
   /// Modifying the state to display favorites puzzles list
   void _displayFavoritesPuzzles(PuzzleListEventSelectFavList event, Emitter<PuzzleListState> emit) {
     try {
-      Log.grey('PuzzleListBloc._displayFavoritesPuzzles - ');
       final currentState = state as PuzzleListStateLoaded;
       emit(PuzzleListStateLoadedFav(
         list: currentState.list.copy,
@@ -116,7 +113,6 @@ class PuzzleListBloc extends Bloc<PuzzleListEvent, PuzzleListState> {
   /// Modifying the state to display all puzzles list
   void _displayAllPuzzles(PuzzleListEventSelectAllList event, Emitter<PuzzleListState> emit) {
     try {
-      Log.grey('PuzzleListBloc._displayAllPuzzles - ');
       final currentState = state as PuzzleListStateLoaded;
       emit(PuzzleListStateLoadedAll(
         list: currentState.list.copy,
@@ -136,7 +132,6 @@ class PuzzleListBloc extends Bloc<PuzzleListEvent, PuzzleListState> {
     final Set<int> puzzleIds = await getPuzzleIdSetUseCase.call(event.difficulty);
     if (puzzleIds.isEmpty) _triggerError(emit, state, event, Exception('PuzzleListBloc._loadPuzzleList puzzleIds list is empty'));
     final Set<int> puzzleFinishedIds = await getPuzzleFinishedIdSetUseCase.call(event.difficulty);
-    Log.red('PuzzleListBloc._loadPuzzleList - set $puzzleFinishedIds');
 
     final Set<int> puzzlesFavIds = await getPuzzleFavIdSetUseCase.call(event.difficulty);
     final Set<PuzzleEntity> puzzles = await getPuzzleSetUseCase.execute(puzzleIds);

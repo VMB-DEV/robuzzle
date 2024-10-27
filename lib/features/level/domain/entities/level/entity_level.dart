@@ -36,11 +36,8 @@ class LevelEntity {
   });
 
   factory LevelEntity.from({ required PuzzleEntity puzzle, required ProgressEntity progress }) {
-    Log.grey('LevelEntity.from - ');
     if (puzzle.id != progress.id) { throw Exception('Error creating LevelEntity, puzzle.id = ${puzzle.id} and progress.id = ${progress.id}'); }
-    Log.white('LevelEntity.from - p ${progress.toString()}');
     final functions = progress.functions..formatForLevelEntity(puzzle.functionsSizes);
-    Log.white('LevelEntity.from - p ${progress.toString()}');
     final map = puzzle.map.copy..cleanRows();
 
     final menu = ActionMenuEntity.from( allowedCommand:  puzzle.commandAllowed, map: puzzle.map, functions: progress.functions, );
@@ -56,10 +53,6 @@ class LevelEntity {
       isWin: progress.isWin,
     );
 
-    // level.printIt();
-    // print('LevelEntity.from - ');
-    // print(level);
-
     return level;
   }
 
@@ -71,8 +64,6 @@ class LevelEntity {
         'start : ${map.ship.dir.name} ${map.ship.pos.toString()}\n'
         'map : \n${map.toString()}\n'
         '${functions.toString()}\n'
-      // 'stars: ${map.star}'
-        // 'stars : ${List.generate(map.stars.length, (i) => map.stars[i].toString()).join(' ')}'
       ;
   }
 

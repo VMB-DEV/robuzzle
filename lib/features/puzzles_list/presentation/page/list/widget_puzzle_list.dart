@@ -38,8 +38,6 @@ class PuzzleListCardsWidget extends StatelessWidget {
             PuzzleListStateLoadedFav() => state.favorites.copy,
           };
           if (list.isNotEmpty && orientation.isLandscape) list = list.sublist(1);
-          Log.grey('PuzzleListCardsWidget.build - ');
-          // if (orientation.isPortrait && list.isNotEmpty) list.insert(0, list.first);
           return SizedBox(
             height: box.H,
             width: box.W,

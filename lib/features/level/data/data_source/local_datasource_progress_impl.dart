@@ -15,7 +15,6 @@ class ProgressLocalDataSourceImpl extends ProgressLocalDataSource {
 
   @override
   Future<ProgressModel> getProgressById(int id) async {
-    Log.grey('ProgressLocalDataSourceImpl.getProgressById - ');
     final LazyBox<ProgressModel> box = await Hiver.progressBox;
     final ProgressModel progress = await box.get(id) ?? ProgressModel.empty(id);
     return progress;
@@ -23,14 +22,12 @@ class ProgressLocalDataSourceImpl extends ProgressLocalDataSource {
 
   @override
   void setProgress(ProgressModel progress) async {
-    Log.grey('ProgressLocalDataSourceImpl.setProgress - ');
     final LazyBox<ProgressModel> box = await Hiver.progressBox;
     box.put(progress.id, progress);
   }
 
   @override
   void setWin(int id, int difficulty) {
-    Log.grey('ProgressLocalDataSourceImpl.setWin - ');
     final Set<int> finishedPuzzle = sharedPreferences.getIntSet(SharedPreferencesKeys.puzzleFinished(difficulty)) ?? {};
     finishedPuzzle.add(id);
     sharedPreferences.setIntSet(SharedPreferencesKeys.puzzleFinished(difficulty), finishedPuzzle);

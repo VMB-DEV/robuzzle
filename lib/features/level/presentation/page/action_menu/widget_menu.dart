@@ -29,7 +29,6 @@ class ActionMenuWidget extends StatelessWidget {
       size: boxSizeStatic.toInt(),
       darkFilter: darkFilter,
       onTap: () {
-        printRed('ActionMenuWidget.build');
         context.read<FunctionsBloc>().add(FunctionsEventMenuSelectAction( actionSelected: action));
         Navigator.of(context).pop();
       },
