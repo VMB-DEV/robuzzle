@@ -26,12 +26,9 @@ class Hiver {
   
   static void buildPuzzleDataBase() async {
     try {
-      printYellow('Hiver.buildPuzzleDataBase -');
       await Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
       final box = puzzleBox;
-      printYellow('Hiver.buildPuzzleDataBase - ${box.keys.length}');
       if (box.isEmpty) {
-        printYellow('Hiver.buildPuzzleDataBase - ${box.runtimeType} is empty ');
         String puzzlesDataString = await rootBundle.loadString('assets/dataPuzzles/AllPuzzles');
         List<String> listPuzzleStr = puzzlesDataString.split(PuzzleModel.puzzleSeparator);
         List<PuzzleModel> listPuzzles = listPuzzleStr.map((s) => PuzzleModel.parse(s)).toList();
@@ -39,7 +36,6 @@ class Hiver {
           await box.put(p.id, p);
         });
       }
-      printYellow('Hiver.buildPuzzleDataBase - ${box.keys.length}');
     } catch (e) {
       Log.red('Hiver.buildPuzzleDataBase - failed');
       throw Exception('Hiver.buildPuzzleDataBase - Error\n$e');

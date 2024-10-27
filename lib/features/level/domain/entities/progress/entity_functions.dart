@@ -58,14 +58,9 @@ class FunctionsEntity {
   /// update the functions extracted form brut data to be used in the Level
   void formatForLevelEntity(List<int> functionSizes) => _isConform(functionSizes) ? _filledFunctions(functionSizes)
       : throw Exception('FunctionsEntity formatForLevelEntity');
-  // FunctionsEntity formatForLevelEntity(List<int> functionSizes) => _isConform(functionSizes) ? _filledFunctions(functionSizes)
-  //     : throw Exception('FunctionsEntity formatForLevelEntity');
 
   /// Fill the list of Action because ActionEntity.NoAction is not stored in the data to be storage efficient
   void _filledFunctions(List<int> functionSizes) {
-    // FunctionsEntity functions = copy;
-    Log.white('FunctionsEntity._filledFunctions - ${toString()}');
-
     int initLen = values.length;
     int diff = functionSizes.length;
     if (initLen < functionSizes.length) {
@@ -79,26 +74,7 @@ class FunctionsEntity {
         values[index].addAll(List.generate(diff, (int col) => ActionEntity.noAction));
       }
     }
-    Log.white('FunctionsEntity._filledFunctions - ${toString()}');
-    // return functions;
   }
-  // FunctionsEntity _filledFunctions(List<int> functionSizes) {
-  //   FunctionsEntity functions = copy;
-  //   int initLen = functions.values.length;
-  //   int diff = functionSizes.length;
-  //   if (initLen < functionSizes.length) {
-  //     for (int i = initLen; i < diff; ++i) {
-  //       functions.values.add(List.generate(functionSizes[i], (int col) => ActionEntity.noAction));
-  //     }
-  //   }
-  //   for (var (index, size) in functionSizes.indexed) {
-  //     if (functions.values[index].length < size) {
-  //       int diff = size - functions.values[index].length;
-  //       functions.values[index].addAll(List.generate(diff, (int col) => ActionEntity.noAction));
-  //     }
-  //   }
-  //   return functions;
-  // }
 
   /// switch two actions in the functions if user want to modify quickly the instructions
   FunctionsEntity switchActions({required PositionEntity action1, required PositionEntity action2}) {

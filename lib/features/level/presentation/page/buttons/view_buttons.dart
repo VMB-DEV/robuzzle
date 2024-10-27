@@ -20,7 +20,6 @@ class ButtonsView extends StatelessWidget {
     listener: (context, state) {},
     builder: (context, state) {
       int index = state is InGameStateLoaded ? state.actionsList.currentIndex : 0;
-      Log.grey('ButtonsView.build - ');
       return _layout(state, index);
     }
   );

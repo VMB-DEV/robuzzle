@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:robuzzle/core/log/consolColors.dart';
-import 'package:robuzzle/easyTesting.dart';
 import 'package:robuzzle/features/level/domain/entities/progress/entity_functions.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/functions/state_functions.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/bloc_in_game.dart';
@@ -43,7 +42,6 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
     try {
       final currentState = state as LevelStateLoaded;
       if (inGameState is InGameStateWin) {
-        Log.grey('LevelBloc._listenToGame - ');
         setWinUseCase.execute(currentState.level.id, currentState.difficulty);
       }
     } catch (e) {
@@ -61,30 +59,24 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   }
 
   void _updateFunctionsForInGameBloc(FunctionsEntity newFunctions) {
-    Log.grey('LevelBloc._updateFunctionForInGameBloc - ');
     inGameBloc.add(InGameEventNewFunctions(functions: newFunctions));
   }
 
   void _saveFunctionsToLocalData(FunctionsStateUpdated functionState) {
-    Log.grey('LevelBloc._saveFunctionsToLocalData - ');
     final currentState = state as LevelStateLoaded;
     final progress = ProgressEntity(
       id: currentState.level.id,
       functions: functionState.functions,
       isWin: false,
     );
-    Log.white('LevelBloc._saveFunctionsToLocalData - p ${progress.toString()}');
     setProgressUseCase.execute(progress);
   }
 
   /// load the level and update state of Functions and InGameBloc
   Future<void> _loadLevelByID(LevelEventLoadLevelByID event, Emitter<LevelState> emit) async {
-    Log.grey('LevelBloc._loadLevelByID - ');
     emit(LevelStateLoading());
     try {
       final LevelEntity level = await getLevelUseCase.call(event.id);
-      Log.white('LevelBloc._loadLevelByID - f ${level.functions.toString()}');
-      solutionById(level.id, level.functions);
       emit(LevelStateLoaded(level, event.difficulty));
       inGameBloc.add(InGameEventLoadLevel(level: level.copy));
       functionsBloc.add(FunctionsEventLoad(functions: level.functions.copy));

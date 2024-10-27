@@ -15,7 +15,6 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
 
   @override
   Future<Set<PuzzleModel>> getPuzzleModelSetById(Set<int> idList) async {
-    Log.grey('PuzzleLocalDataSourceImpl.getPuzzleModelSetById - ');
     Box<PuzzleModel> box = Hiver.puzzleBox;
     Set<PuzzleModel> puzzleSet = {};
     for (int id in idList) {
@@ -31,7 +30,6 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
 
   @override
   Future<PuzzleModel> getPuzzleModelById(int id) async {
-    Log.grey('PuzzleLocalDataSourceImpl.getPuzzleModelById - ');
     Box<PuzzleModel> box = Hiver.puzzleBox;
     if (box.isEmpty) { Hiver.buildPuzzleDataBase(); }
     final PuzzleModel? puzzle = box.get(id);
@@ -45,7 +43,6 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
 
   @override
   Future<void> buildHiveDataBase(Box<PuzzleModel> box) async {
-    Log.red('PuzzleLocalDataSourceImpl.buildHiveDataBase - ');
     String contentStr = await rootBundle.loadString('assets/dataPuzzles/AllPuzzles');
     List<String> listPuzzleStr = contentStr.split(PuzzleModel.puzzleSeparator);
     List<PuzzleModel> listPuzzles = listPuzzleStr.map((s) => PuzzleModel.parse(s)).toList();

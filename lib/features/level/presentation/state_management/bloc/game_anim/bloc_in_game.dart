@@ -82,21 +82,13 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   /// verify if the game has been won
   void _updateActionListIndex(InGameEvenIndexUpdate event, Emitter<InGameState> emit) {
     try {
-      Log.grey('InGameBloc._updateActionListIndex - ${event.newIndex}');
       final currentState = state as InGameStateLoaded;
       final int newIndex = event.newIndex;
       if (currentState.actionsList.isWinIndex(newIndex)) {
-        Log.red('InGameBloc._updateActionListIndex - ${currentState.actionsList.list[newIndex].map.starsLeft}');
         emit(InGameStateWin(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
         ));
-      // if (newIndex == currentState.actionsList.lastIndex && currentState.actionsList.list[newIndex].map.noStarsLeft ) {
-      // } else if (_animation.isActive) {
-      //   emit(InGameStateOnPlay(
-      //     level: currentState.level.copy,
-      //     actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
-      //   ));
       } else {
         emit(InGameStateOnPause(
           level: currentState.level.copy,
@@ -110,7 +102,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   /// updating the functions so the actionList can be recalculated
   void _newFunctions(InGameEventNewFunctions event, Emitter<InGameState> emit) {
     try {
-      Log.grey('InGameBloc._newFunctions - ');
       final currentState = state as InGameStateLoaded;
       final newLevel = currentState.level.copyWith(functions: event.functions);
       emit(InGameStateLoaded(
@@ -125,8 +116,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   /// load a new Level so the actionList can be updated base on it
   void _loadLevel(InGameEventLoadLevel event, Emitter<InGameState> emit) {
     try {
-      Log.grey('InGameBloc._loadLevel - ');
-      Log.white('InGameBloc._loadLevel - f ${event.level.functions}');
       emit(InGameStateLoaded(
         level: event.level.copy,
         actionsList: ActionsListEntity.fromLevel(event.level.copy),
