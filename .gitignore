@@ -42,3 +42,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 lib/uiTests.dart
+.firebase/hosting.YnVpbGQvd2Vi.cache
+test/test0.dart
+.firebase/hosting.YnVpbGQvd2Vi.cache
+*.cache
