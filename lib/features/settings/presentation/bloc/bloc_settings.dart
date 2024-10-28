@@ -77,7 +77,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onSetSettings(SettingsEventSet event, Emitter<SettingsState> emit) async {
     print('SettingsBloc._onSetSettings - ');
     try {
-      await useCase.setSettingsEntity(entity: event.settings);
+      useCase.setSettingsEntity(entity: event.settings);
       emit(SettingsStateLoaded(settings: event.settings));
     } catch (e) { _triggerError(emit, state, event, e); }
   }

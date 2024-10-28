@@ -10,7 +10,7 @@ class SettingsLocalDataSourceImpl extends SettingsLocalDataSource{
   SettingsLocalDataSourceImpl(this.sharedPreferences);
 
   @override
-  Future<SettingsModel> getSettingsModel() async {
+  SettingsModel getSettingsModel() {
     final int? themeData = sharedPreferences.getInt(SharedPreferencesKeys.themeType);
     final int? speed = sharedPreferences.getInt(SharedPreferencesKeys.speed);
     final bool? leftHanded = sharedPreferences.getBool(SharedPreferencesKeys.leftHand);
@@ -33,19 +33,19 @@ class SettingsLocalDataSourceImpl extends SettingsLocalDataSource{
   }
 
   @override
-  Future<bool> getAnimations() async => sharedPreferences.getBool(SharedPreferencesKeys.animations)
+  bool getAnimations() => sharedPreferences.getBool(SharedPreferencesKeys.animations)
       ?? SettingsModel.defaultType().animations;
 
   @override
-  Future<bool> getLeftHanded() async => sharedPreferences.getBool(SharedPreferencesKeys.leftHand)
+  bool getLeftHanded() => sharedPreferences.getBool(SharedPreferencesKeys.leftHand)
       ?? SettingsModel.defaultType().leftHand;
 
   @override
-  Future<int> getSpeed() async => sharedPreferences.getInt(SharedPreferencesKeys.speed)
+  int getSpeed() => sharedPreferences.getInt(SharedPreferencesKeys.speed)
       ?? SettingsModel.defaultType().speed;
 
   @override
-  Future<ThemeTypeModel> getTheme() async {
+  ThemeTypeModel getTheme() {
     final int? themeData = sharedPreferences.getInt(SharedPreferencesKeys.themeType);
     if (themeData == null) return SettingsModel.defaultType().theme;
     return ThemeTypeModel.fromStorage(themeData);

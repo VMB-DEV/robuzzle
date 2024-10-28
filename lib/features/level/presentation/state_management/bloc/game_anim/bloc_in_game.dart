@@ -7,17 +7,18 @@ import 'package:robuzzle/features/level/domain/usecases/usecase_set_win.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/state_in_game.dart';
 
 import '../../../../../../core/log/consolColors.dart';
+import '../../../../../settings/domain/repositories/repository_settings.dart';
 import '../../../../domain/entities/progress/entity_functions.dart';
 import '../../../../domain/entities/puzzle/entity_map.dart';
 import 'event_in_game.dart';
 
-int timing = 250;
-// int timing = 500;
-
 class InGameBloc extends Bloc<InGameEvent, InGameState> {
   Timer _animation = Timer.periodic(const Duration(), (_) {})..cancel();
+  final SettingsRepository settingsRepo;
+  int timing = 0;
 
-  InGameBloc() : super(InGameStateLoading()) {
+  InGameBloc({required this.settingsRepo}) : super(InGameStateLoading()) {
+    settingsRepo.getSpeedStream().listen(_listenToCurrentGameSpeed);
     on<InGameEventNewFunctions>(_newFunctions);
     on<InGameEventLoadLevel>(_loadLevel);
     on<InGameEventToggleMapCase>(_toggleMapCase);
@@ -31,6 +32,11 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   StreamSink<FunctionsEntity> get actionPositionSink => _actionPositionStreamController.sink;
   Stream<FunctionsEntity> get actionPositionStream => _actionPositionStreamController.stream;
 
+  ///updating the game speed, the loop timing when Settings has been modified
+  void _listenToCurrentGameSpeed(int newSpeed) {
+    Log.red('InGameBloc._listenToCurrentGameSpeed - newSpeed $newSpeed');
+    timing = newSpeed;
+  }
 
   /// launch the animation by looping through the actionList
   void _startAnimation( InGameEventPlay event, Emitter<InGameState> emit) async {
@@ -162,4 +168,5 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       'Calling event -> ${event.runtimeType}\n'
       '${error.toString()}'
   ));
+
 }
