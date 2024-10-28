@@ -45,7 +45,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
         currentShip = currentState.actionsList.list[currentIndex].map.ship;
         if (currentIndex == maxIndex) {timer.cancel();}
         add(InGameEvenIndexUpdate(newIndex: currentIndex));
-        print('InGameBloc._startAnimation - ${currentState.level.map.stops} ${currentShip}');
         if ( currentState.level.map.containStopMark(currentShip.pos) ) timer.cancel();
       });
     } catch (e) { _triggerError(emit, state, event, e); }
@@ -86,6 +85,11 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       final int newIndex = event.newIndex;
       if (currentState.actionsList.isWinIndex(newIndex)) {
         emit(InGameStateWin(
+          level: currentState.level.copy,
+          actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
+        ));
+      } else if (_animation.isActive) {
+        emit(InGameStateOnPlay(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
         ));

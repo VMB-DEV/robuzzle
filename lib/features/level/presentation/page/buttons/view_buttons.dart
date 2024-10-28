@@ -7,8 +7,6 @@ import 'package:robuzzle/core/widgets/BlurryContainer.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/bloc_in_game.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/event_in_game.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/state_in_game.dart';
-
-import '../../../../../core/log/consolColors.dart';
 import '../../../../settings/presentation/widget/popup_route_settings.dart';
 import '../../../../settings/presentation/widget/popup_layout_settings.dart';
 
@@ -101,7 +99,6 @@ class ButtonsView extends StatelessWidget {
 
 
   Widget _buttonRewind(BuildContext context, BoxConstraints constraints, int index, Orientation orientation) {
-  // Widget _buttonRewind(BuildContext context, int index) {
     final rewindIcon = Icon(
       Symbols.fast_rewind_rounded,
       fill: 0.4,
@@ -109,7 +106,6 @@ class ButtonsView extends StatelessWidget {
       grade: 0.5,
       opticalSize: 35,
       size: orientation.isLandscape ? constraints.H * 0.65 : constraints.H * 0.80,
-      // size: height * 0.8,
       color: index == 0 ? Colors.white38 : Colors.grey.shade100,
       shadows: index == 0 ? null : [ Shadow(color: Colors.grey.shade100, blurRadius: 1.5) ],
     );
@@ -121,7 +117,6 @@ class ButtonsView extends StatelessWidget {
   }
 
   Widget _buttonForward(BuildContext context, BoxConstraints constraints, int index, Orientation orientation) {
-  // Widget _buttonForward(BuildContext context, int index) {
     final forwardIcon = Icon(
       Symbols.fast_forward_rounded,
       fill: 0.4,
@@ -129,7 +124,6 @@ class ButtonsView extends StatelessWidget {
       grade: 0.5,
       opticalSize: 35,
       size: orientation.isLandscape ? constraints.H * 0.65 : constraints.maxHeight * 0.80,
-      // size: height * 0.8,
       color: Colors.grey.shade100,
       shadows: index == 0 ? [] : [ Shadow(color: Colors.grey.shade100, blurRadius: 1.5) ],
     );
@@ -141,7 +135,6 @@ class ButtonsView extends StatelessWidget {
   }
 
   Widget _buttonReset(BuildContext context, BoxConstraints constraints, int index, Orientation orientation) {
-  // Widget _buttonReset(BuildContext context, int index) {
     final resetIcon = Icon(
       Symbols.settings_backup_restore_rounded,
       fill: 0.4,
@@ -149,7 +142,6 @@ class ButtonsView extends StatelessWidget {
       grade: 0.5,
       opticalSize: 50,
       size: orientation.isLandscape ? constraints.H * 0.50 : constraints.maxHeight * 0.70,
-      // size: height * 0.7,
       color: index == 0 ? Colors.white38 : Colors.grey.shade100,
       shadows: index == 0 ? null : [ Shadow(color: Colors.grey.shade100, blurRadius: 1.5) ],
     );
@@ -161,7 +153,6 @@ class ButtonsView extends StatelessWidget {
   }
 
   Widget _buttonPlay(BuildContext context, BoxConstraints constraints, Orientation orientation) {
-  // Widget _buttonPlay(BuildContext context) {
     final playIcon = Icon(
       Symbols.play_arrow_rounded,
       fill: 0.4,
@@ -180,15 +171,12 @@ class ButtonsView extends StatelessWidget {
   }
 
   Widget _buttonSettings(BuildContext context, BoxConstraints constraints, Orientation orientation) {
-  // Widget _buttonSettings(BuildContext context) {
     final settingsIcon = Icon(
       Symbols.settings_rounded,
       fill: 0.15,
       weight: 600,
       opticalSize: 80,
       size: orientation.isLandscape ? constraints.H * 0.45 : constraints.maxHeight * 0.60,
-      // size: height * 0.6,
-      // shadows: const [ Shadow(color: Colors.black, blurRadius: 15.0) ],
       color: Colors.grey.shade100,
       shadows: [ Shadow(color: Colors.grey.shade100, blurRadius: 1.5) ],
     );
@@ -202,7 +190,6 @@ class ButtonsView extends StatelessWidget {
   }
 
   Widget _buttonPause(BuildContext context, BoxConstraints constraints, Orientation orientation) {
-  // Widget _buttonPause(BuildContext context) {
     final stopIcon = Icon(
       Symbols.pause_rounded,
       fill: 0.4,
@@ -210,7 +197,6 @@ class ButtonsView extends StatelessWidget {
       grade: 0.5,
       opticalSize: 50 ,
       size: constraints.maxHeight * 0.8,
-      // size: height * 0.8,
       color: Colors.grey.shade100,
       shadows: const [ Shadow(color: Colors.white, blurRadius: 1.5) ],
     );
