@@ -5,6 +5,7 @@ import 'package:robuzzle/core/extensions/orientation.dart';
 import 'package:robuzzle/core/log/consolColors.dart';
 import 'package:robuzzle/core/widgets/LoadingWidget.dart';
 import 'package:robuzzle/features/level/presentation/page/action_list/view_action_list.dart';
+import 'package:robuzzle/features/level/presentation/page/title/widget_level_title.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/level/bloc_level.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/level/state_level.dart';
 import 'package:robuzzle/features/settings/presentation/bloc/bloc_settings.dart';
@@ -42,10 +43,11 @@ class LevelPage extends StatelessWidget {
           return _loadLevelAndDisplayLayout(context);
         case LevelStateLoaded(): {
           if ( state.level.id == id) {
-            return const LevelLayout(
-              mapView: MapView(),
-              functionView: FunctionsView(),
-              actionListView: ActionListView(),
+            return LevelLayout(
+              titleWidget: LevelTitleWidget(level: state.level),
+              mapView: const MapView(),
+              functionView: const FunctionsView(),
+              actionListView: const ActionListView(),
             );
           } else {
             return _loadLevelAndDisplayLayout(context);
@@ -60,9 +62,11 @@ class LevelLayout extends StatelessWidget {
   final Widget mapView;
   final Widget functionView;
   final Widget actionListView;
+  final Widget titleWidget;
   final bool isFinished;
 
   const LevelLayout({
+    this.titleWidget = const Text("Level"),
     this.mapView = const LoadingWidget('Loading Map'),
     this.actionListView = const SizedBox(),
     this.functionView = const LoadingWidget('Loading Functions'),
@@ -151,11 +155,6 @@ class LevelLayout extends StatelessWidget {
       height: box.H * 0.47,
       width: box.W,
     ),
-    // ButtonsView(
-    //   height: box.H * 0.06,
-    //   width: box.W,
-    //   orientation: Orientation.portrait,
-    // ),
     _buttonsView(
       height: box.H * 0.06,
       width: box.W,
@@ -168,7 +167,7 @@ class LevelLayout extends StatelessWidget {
     height: height,
     width: width,
     color: Colors.black12,
-    child: Text('Level'),
+    child: titleWidget,
   );
 
   _mapView({required double height, required double width})
