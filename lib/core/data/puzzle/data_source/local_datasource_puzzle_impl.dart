@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:robuzzle/core/log/consolColors.dart';
+import '../../hive/hive_box_name.dart';
 import '../../hive/hiver.dart';
 import '../model/model_puzzle.dart';
 import 'local_datasource_puzzle.dart';
@@ -29,7 +28,11 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
   }
 
   @override
-  Future<PuzzleModel> getPuzzleModelById(int id) async {
+  PuzzleModel getPuzzleModelById(int id) {
+    if (!Hive.isBoxOpen(HiveBoxName.puzzleBoxName)) {
+      Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
+      // throw Exception('Box not open');
+    }
     Box<PuzzleModel> box = Hiver.puzzleBox;
     if (box.isEmpty) { Hiver.buildPuzzleDataBase(); }
     final PuzzleModel? puzzle = box.get(id);
