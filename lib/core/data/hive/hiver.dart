@@ -20,7 +20,7 @@ class Hiver {
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Hive.initFlutter();
-    _initAdapters();
+    initAdapters();
     buildPuzzleDataBase();
   }
   
@@ -45,7 +45,7 @@ class Hiver {
   static Box<PuzzleModel> get puzzleBox => Hive.box<PuzzleModel>(HiveBoxName.puzzleBoxName);
   static Future<LazyBox<ProgressModel>> get progressBox => Hive.openLazyBox(HiveBoxName.progressBoxName);
 
-  _initAdapters() {
+  initAdapters() {
     _initPuzzleAdapters();
     _initProgressionAdapters();
   }

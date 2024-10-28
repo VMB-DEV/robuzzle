@@ -6,6 +6,6 @@ import '../model/model_puzzle.dart';
 abstract class PuzzleLocalDataSource {
   Future<List<PuzzleModel>> getAllPuzzleModel();
   Future<Set<PuzzleModel>> getPuzzleModelSetById(Set<int> idList);
-  Future<PuzzleModel> getPuzzleModelById(int id);
+  PuzzleModel getPuzzleModelById(int id);
   Future<void> buildHiveDataBase(Box<PuzzleModel> box);
 }

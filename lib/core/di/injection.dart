@@ -32,7 +32,7 @@ import '../data/puzzle/data_source/local_datasource_puzzle_impl.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> init() async {
-  // External
+  /// External
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(() => sharedPreferences);
 
