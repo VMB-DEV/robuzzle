@@ -83,6 +83,7 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
     try {
       final currentState = state as InGameStateLoaded;
       final int newIndex = event.newIndex;
+      if (newIndex > currentState.actionsList.lastIndex) return;
       if (currentState.actionsList.isWinIndex(newIndex)) {
         emit(InGameStateWin(
           level: currentState.level.copy,
