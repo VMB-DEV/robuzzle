@@ -18,7 +18,8 @@ class InGameEventLoadLevel extends InGameEvent{
 /// called to update the animation step index 
 class InGameEvenIndexUpdate extends InGameEvent {
   final int newIndex;
-  InGameEvenIndexUpdate({required this.newIndex});
+  final bool onPause;
+  InGameEvenIndexUpdate({required this.newIndex, this.onPause = false});
 
   @override
   List<Object?> get props => [newIndex];

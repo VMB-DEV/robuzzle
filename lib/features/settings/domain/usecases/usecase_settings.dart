@@ -6,8 +6,8 @@ class SettingsUseCase {
   SettingsUseCase({required this.repository});
 
   Future<SettingsEntity> getSettingsEntity() async {
-    final model = await repository.getSettingsModel();
+    final model = repository.getSettingsModel();
     return SettingsEntity.from(model: model);
   }
-  Future<void> setSettingsEntity({required SettingsEntity entity}) => repository.setSettingsModel(model: entity.toModel());
+  void setSettingsEntity({required SettingsEntity entity}) => repository.setSettingsModel(model: entity.toModel());
 }

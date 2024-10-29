@@ -48,7 +48,6 @@ class FunctionsView extends StatelessWidget {
   }
 
   Widget _buildView(BuildContext context, FunctionsState functionState, InGameState inGameState, bool leftHanded) {
-    print('FunctionsView._buildView - ');
     if (functionState is FunctionsStateLoading || inGameState is InGameStateLoading) { return LoadingWidget('Loading...'); }
     if (functionState is FunctionsStateError) { return ErrorView(functionState.message); }
     if (inGameState is InGameStateError) { return ErrorView(inGameState.message); }
@@ -158,7 +157,6 @@ class FunctionsView extends StatelessWidget {
     final function = functions.values[functionNumber];
     final functionSize = function.length;
 
-    print('FunctionsView._buildWrap - ');
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 30, bottom: 10, top: 10, end: 10),
       child: IntrinsicWidth(

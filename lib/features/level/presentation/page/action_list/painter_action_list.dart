@@ -20,8 +20,7 @@ class ActionCaseListPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (list.isEmpty) { return; }
-    final clipPath = Path()
-      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    final clipPath = Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.clipPath(clipPath);
 
     double currentX = startPadding;
@@ -53,8 +52,5 @@ class ActionCaseListPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant ActionCaseListPainter oldDelegate) {
     return false;
-    // return oldDelegate.list != list
-    //     || oldDelegate.widthPadding != widthPadding
-    //     || oldDelegate.caseSize != caseSize;
   }
 }

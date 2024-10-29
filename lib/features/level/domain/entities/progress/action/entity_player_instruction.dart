@@ -46,6 +46,7 @@ enum PlayerInstructionEntity {
   bool get isFunctionCall => functionCalls().contains(this);
   bool get isPlayerTurning => turnLeft == this || turnRight == this;
   bool get isPlayerMovingForward => goForward == this;
+  bool get isChangingMapColor => this == changeColorToBlue || this == changeColorToGreen || this == changeColorToRed;
   bool get isMapColored => mapColoring.contains(this);
   int get functionNumber => switch (this) {
     PlayerInstructionEntity.goToF0 => 0,

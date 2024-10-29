@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:robuzzle/core/extensions/constraints.dart';
@@ -26,7 +27,6 @@ class ActionListScrollTracker extends StatefulWidget {
 
 class _ActionListScrollTrackerState extends State<ActionListScrollTracker> {
   late ScrollController _scrollController;
-  // double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -43,11 +43,10 @@ class _ActionListScrollTrackerState extends State<ActionListScrollTracker> {
   }
 
   void _onScroll() {
-    // setState(() => _scrollOffset = _scrollController.offset );
     int newIndex = (_scrollController.offset / widget.itemSize.width).round();
     if (newIndex != widget.index) {
       widget.index = newIndex;
-      context.read<InGameBloc>().add(InGameEvenIndexUpdate( newIndex: newIndex, ));
+      context.read<InGameBloc>().add(InGameEvenIndexUpdate( newIndex: newIndex, onPause: true));
     }
   }
 
@@ -56,13 +55,27 @@ class _ActionListScrollTrackerState extends State<ActionListScrollTracker> {
     return SizedBox(
       height: widget.box.H,
       width: widget.box.W,
-      child: ListView.builder(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        // itemCount: widget.list.length + 1 + (widget.box.maxWidth/ widget.itemSize.width).toInt(),
-        itemCount: widget.list.length + (widget.box.maxWidth/ widget.itemSize.width).toInt(),
-        itemExtent: widget.itemSize.width,
-        itemBuilder: (context, index) => SizedBox(width: widget.itemSize.width, height: widget.itemSize.height,),
+      child: Listener(
+        onPointerSignal: (PointerSignalEvent event) {
+          if (event is PointerScrollEvent) {
+            final newOffset = _scrollController.offset + event.scrollDelta.dy ; // Adjust scroll speed multiplier as needed
+            _scrollController.animateTo(
+              newOffset.clamp(
+                _scrollController.position.minScrollExtent,
+                _scrollController.position.maxScrollExtent,
+              ),
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.easeOutCubic,
+            );
+          }
+        },
+        child: ListView.builder(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          itemCount: widget.list.length + (widget.box.maxWidth/ widget.itemSize.width).toInt(),
+          itemExtent: widget.itemSize.width,
+          itemBuilder: (context, index) => SizedBox(width: widget.itemSize.width, height: widget.itemSize.height,),
+        ),
       ),
     );
   }

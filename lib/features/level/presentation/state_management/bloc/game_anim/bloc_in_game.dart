@@ -7,17 +7,18 @@ import 'package:robuzzle/features/level/domain/usecases/usecase_set_win.dart';
 import 'package:robuzzle/features/level/presentation/state_management/bloc/game_anim/state_in_game.dart';
 
 import '../../../../../../core/log/consolColors.dart';
+import '../../../../../settings/domain/repositories/repository_settings.dart';
 import '../../../../domain/entities/progress/entity_functions.dart';
 import '../../../../domain/entities/puzzle/entity_map.dart';
 import 'event_in_game.dart';
 
-int timing = 250;
-// int timing = 500;
-
 class InGameBloc extends Bloc<InGameEvent, InGameState> {
   Timer _animation = Timer.periodic(const Duration(), (_) {})..cancel();
+  final SettingsRepository settingsRepo;
+  int timing = 250;
 
-  InGameBloc() : super(InGameStateLoading()) {
+  InGameBloc({required this.settingsRepo}) : super(InGameStateLoading()) {
+    settingsRepo.getSpeedStream().listen(_listenToCurrentGameSpeed);
     on<InGameEventNewFunctions>(_newFunctions);
     on<InGameEventLoadLevel>(_loadLevel);
     on<InGameEventToggleMapCase>(_toggleMapCase);
@@ -31,6 +32,10 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   StreamSink<FunctionsEntity> get actionPositionSink => _actionPositionStreamController.sink;
   Stream<FunctionsEntity> get actionPositionStream => _actionPositionStreamController.stream;
 
+  ///updating the game speed, the loop timing when Settings has been modified
+  void _listenToCurrentGameSpeed(int newSpeed) {
+    timing = newSpeed;
+  }
 
   /// launch the animation by looping through the actionList
   void _startAnimation( InGameEventPlay event, Emitter<InGameState> emit) async {
@@ -40,13 +45,19 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       int currentIndex = currentState.actionsList.currentIndex;
       ShipEntity currentShip = currentState.actionsList.currentShip;
       int maxIndex = currentState.actionsList.lastIndex;
+      Log.red('InGameBloc._startAnimation - start at ${currentIndex}');
       _animation = Timer.periodic(Duration(milliseconds: timing), (timer) {
         currentIndex++;
-        currentShip = currentState.actionsList.list[currentIndex].map.ship;
-        if (currentIndex == maxIndex) {timer.cancel();}
-        add(InGameEvenIndexUpdate(newIndex: currentIndex));
-        print('InGameBloc._startAnimation - ${currentState.level.map.stops} ${currentShip}');
-        if ( currentState.level.map.containStopMark(currentShip.pos) ) timer.cancel();
+        try {
+          currentShip = currentState.actionsList.list[currentIndex].map.ship;
+          if (currentIndex == maxIndex) {
+            timer.cancel();
+          }
+          add(InGameEvenIndexUpdate(newIndex: currentIndex));
+          if (currentState.level.map.containStopMark(currentShip.pos)) timer.cancel();
+        } catch (e) {
+          timer.cancel();
+        }
       });
     } catch (e) { _triggerError(emit, state, event, e); }
   }
@@ -70,7 +81,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
     try {
       _animation.cancel();
       final currentState = state as InGameStateLoaded;
-      // emit(InGameStateOnPause(
       emit(InGameStateOnPauseInLoop(
         level: currentState.level.copy,
         actionsList: currentState.actionsList.copyWith(currentIndex: 0),
@@ -83,13 +93,23 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   void _updateActionListIndex(InGameEvenIndexUpdate event, Emitter<InGameState> emit) {
     try {
       final currentState = state as InGameStateLoaded;
-      final int newIndex = event.newIndex;
+      int newIndex = event.newIndex;
+      if (newIndex > currentState.actionsList.lastIndex) return;
       if (currentState.actionsList.isWinIndex(newIndex)) {
         emit(InGameStateWin(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
         ));
+      } else if (_animation.isActive && event.onPause == false) {
+        emit(InGameStateOnPlay(
+          level: currentState.level.copy,
+          actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
+        ));
       } else {
+        if (event.onPause == true && _animation.isActive) {
+          newIndex = currentState.actionsList.currentIndex;
+          _animation.cancel();
+        }
         emit(InGameStateOnPause(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
@@ -157,4 +177,5 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       'Calling event -> ${event.runtimeType}\n'
       '${error.toString()}'
   ));
+
 }

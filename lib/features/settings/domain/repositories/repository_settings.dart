@@ -2,15 +2,18 @@ import '../../data/models/model_settings.dart';
 import '../../data/models/model_theme_type.dart';
 
 abstract class SettingsRepository {
-  Future<SettingsModel> getSettingsModel();
-  Future<int> getSpeed();
-  Future<ThemeTypeModel> getTheme();
-  Future<bool> getLeftHanded();
-  Future<bool> getAnimations();
+  Stream<int> getSpeedStream();
+  void updateStreamSpeed(int speed);
 
-  Future<void> setSettingsModel({required SettingsModel model});
-  Future<void> setSpeed({required int value});
-  Future<void> setTheme({required ThemeTypeModel value});
-  Future<void> setLeftHanded({required bool value});
-  Future<void> setAnimations({required bool value});
+  SettingsModel getSettingsModel();
+  int getSpeed();
+  ThemeTypeModel getTheme();
+  bool getLeftHanded();
+  bool getAnimations();
+
+  void setSettingsModel({required SettingsModel model});
+  void setSpeed({required int value});
+  void setTheme({required ThemeTypeModel value});
+  void setLeftHanded({required bool value});
+  void setAnimations({required bool value});
 }

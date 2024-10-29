@@ -2,11 +2,11 @@ import '../models/model_settings.dart';
 import '../models/model_theme_type.dart';
 
 abstract class SettingsLocalDataSource {
-  Future<SettingsModel> getSettingsModel();
-  Future<int> getSpeed();
-  Future<ThemeTypeModel> getTheme();
-  Future<bool> getLeftHanded();
-  Future<bool> getAnimations();
+  SettingsModel getSettingsModel();
+  int getSpeed();
+  ThemeTypeModel getTheme();
+  bool getLeftHanded();
+  bool getAnimations();
 
   void setSettingsTo({required SettingsModel model});
   void setSpeed({required int value});

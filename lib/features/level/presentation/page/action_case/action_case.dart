@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robuzzle/features/level/domain/entities/progress/action/entity_player_instruction.dart';
 import '../../../domain/entities/progress/action/entity_action.dart';
 import '../../../domain/entities/progress/action/entity_case_color.dart';
 
@@ -6,15 +7,13 @@ import '../../../domain/entities/progress/action/entity_case_color.dart';
 class ActionCase extends StatelessWidget {
   final ActionEntity action;
   final bool whiteBorders;
-  final int size;
+  final int side;
   final bool darkFilter;
-  // final Function() onTap;
   final VoidCallback? onTap;
 
   const ActionCase({
     required this.action,
-    required this.size,
-    // required this.onTap,
+    required this.side,
     this.onTap,
     this.whiteBorders = false,
     this.darkFilter = false,
@@ -27,88 +26,10 @@ class ActionCase extends StatelessWidget {
       padding: const EdgeInsetsDirectional.all(1),
       child: GestureDetector(
         onTap: onTap ?? () {},
-        child:
-        Stack(
-          children: [
-            Container(
-              width: size - 2,
-              height: size - 2,
-              decoration: BoxDecoration(
-                color: switch (action.color) {
-                  CaseColorEntity.red => Colors.black,
-                  CaseColorEntity.blue => Colors.blue,
-                  CaseColorEntity.green => Colors.green,
-                  CaseColorEntity.grey => Colors.grey,
-                  CaseColorEntity.none => Colors.black,
-                },
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: switch (action.color) {
-                      CaseColorEntity.red => [ Colors.red.shade700, Colors.red.shade700, Colors.red.shade700, Colors.red.shade600, Colors.red.shade400,],
-                      CaseColorEntity.blue => [ Colors.indigo.shade700, Colors.indigo, Colors.blue.shade600 ],
-                      CaseColorEntity.green => [Colors.teal.shade800, Colors.green.shade700],
-                      CaseColorEntity.grey => [Colors.grey , Colors.grey , Colors.grey.shade400],
-                      CaseColorEntity.none => [Colors.black, Colors.black],
-                    }
-                ),
-                border: Border.all(
-                  color: whiteBorders ? Colors.white : Colors.black,
-                  width: whiteBorders ? 1 : 0.5,
-                ),
-                borderRadius: BorderRadius.circular(3.5),
-              ),
-            ),
-            SizedBox(
-              width: size - 2,
-              height: size - 2,
-              child: Center(
-                child: Stack(
-                  children: [
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontSize: 18,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 2
-                          ..color = Colors.black.withOpacity(0.3),
-                      ),
-                      child: Text('${action.instruction}'),
-                    ),
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontSize: 18,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 0.8
-                          ..color = Colors.black,
-                      ),
-                      child: Text('${action.instruction}'),
-                    ),
-                    DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                        child: Text('${action.instruction}'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (darkFilter) Container(
-              width: size - 2,
-              height: size - 2,
-              decoration: BoxDecoration(
-                color: Colors.black54.withOpacity(0.35),
-                border: Border.all(
-                  color: whiteBorders ? Colors.white : Colors.black,
-                  width: whiteBorders ? 1 : 0.5,
-                ),
-                borderRadius: BorderRadius.circular(3.5),
-              ),
-            ),
-          ]
-        ),
+        child: CustomPaint(
+          size: Size(side.toDouble() - 2, side.toDouble() - 2),
+          painter: ActionCasePainter(action: action, whiteBorders: whiteBorders),
+        )
       ),
     );
   }
@@ -159,7 +80,7 @@ class ActionCasePainter extends CustomPainter {
     final gradient = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: _getColors(),
+      colors: _getColors(action.color),
     );
     final paint = Paint()..shader = gradient.createShader(rect);
     canvas.drawRRect(borderRadius.toRRect(rect), paint);
@@ -172,11 +93,15 @@ class ActionCasePainter extends CustomPainter {
     canvas.drawRRect(borderRadius.toRRect(rect), borderPaint);
 
     // Draw text
-    _drawText(canvas, size);
+    if (action.isChangeColor) {
+      _drawColorChange(canvas, size);
+    } else {
+      _drawText(canvas, size);
+    }
   }
 
-  List<Color> _getColors() {
-    switch (action.color) {
+  List<Color> _getColors(CaseColorEntity color) {
+    switch (color) {
       case CaseColorEntity.red:
         return [Colors.red.shade700, Colors.red.shade700, Colors.red.shade700, Colors.red.shade600, Colors.red.shade400];
       case CaseColorEntity.blue:
@@ -188,6 +113,40 @@ class ActionCasePainter extends CustomPainter {
       case CaseColorEntity.none:
         return [Colors.black];
     }
+  }
+
+  void _drawColorChange(Canvas canvas, Size size) {
+    final rect = Rect.fromLTWH(1, 1, size.width - 2, size.height - 2);
+    final radius = rect.width * 0.3;
+    final gradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: _getColors(switch(action.instruction) {
+        PlayerInstructionEntity.changeColorToRed => CaseColorEntity.red,
+        PlayerInstructionEntity.changeColorToGreen => CaseColorEntity.green,
+        PlayerInstructionEntity.changeColorToBlue => CaseColorEntity.blue,
+        _ => CaseColorEntity.grey
+      }),
+    );
+
+    final innerCirclePaint = Paint()
+        ..style = PaintingStyle.fill
+        ..shader = gradient.createShader(rect)
+    ;
+    final outlineCirclePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.8
+      ..color = Colors.black
+    ;
+    final outerCirclePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..color = Colors.white
+    ;
+
+    canvas.drawCircle(rect.center, radius, innerCirclePaint);
+    canvas.drawCircle(rect.center, radius, outlineCirclePaint);
+    canvas.drawCircle(rect.center, radius, outerCirclePaint);
   }
 
   void _drawText(Canvas canvas, Size size) {

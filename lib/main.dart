@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:robuzzle/config/themes/themes.dart';
@@ -27,7 +24,7 @@ Future<void> main() async {
       providers: [
         BlocProvider<SettingsBloc>(create: (BuildContext context) => settingsBloc..add(SettingsEventGet())),
         BlocProvider(create: (ctx) => FunctionsBloc()),
-        BlocProvider(create: (ctx) => InGameBloc()),
+        BlocProvider(create: (ctx) => InGameBloc(settingsRepo: di.getIt())),
         BlocProvider<LevelBloc>(
           create: (BuildContext context) => LevelBloc(
             getLevelUseCase: di.getIt(),

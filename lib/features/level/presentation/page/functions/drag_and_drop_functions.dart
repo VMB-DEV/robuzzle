@@ -63,7 +63,7 @@ class _FunctionActionCaseDragAndDropState extends DragAndDropItemState {
   @override
   Widget buildOnDragWidget() => ActionCase(
     action: widget.action,
-    size: boxSizeStatic.toInt(),
+    side: boxSizeStatic.toInt(),
     whiteBorders: true,
     // onTap: () {},
   );
@@ -71,7 +71,7 @@ class _FunctionActionCaseDragAndDropState extends DragAndDropItemState {
   Widget buildOnDragLeftWidget() => Stack(children: [
     ActionCase(
       action: ActionEntity.noAction,
-      size: boxSizeStatic.toInt(),
+      side: boxSizeStatic.toInt(),
       // onTap: () {},
     ),
     Padding(
@@ -87,13 +87,11 @@ class _FunctionActionCaseDragAndDropState extends DragAndDropItemState {
     ),
   ]);
   @override
-  Widget buildStaticItem() => Container(
-    child: ActionCase(
-      action: widget.action,
-      size: boxSizeStatic.toInt(),
-      whiteBorders: borders ? true : itemOnTopState,
-      onTap: onStaticItemTap(),
-      darkFilter: widget.darkFilter,
-    ),
+  Widget buildStaticItem() => ActionCase(
+    action: widget.action,
+    side: boxSizeStatic.toInt(),
+    whiteBorders: borders ? true : itemOnTopState,
+    onTap: onStaticItemTap(),
+    darkFilter: widget.darkFilter,
   );
 }

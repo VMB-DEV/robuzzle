@@ -1,43 +1,64 @@
+import 'dart:async';
+
 import '../../domain/repositories/repository_settings.dart';
 import '../data_source/local_data_source_settings.dart';
 import '../models/model_settings.dart';
 import '../models/model_theme_type.dart';
 
 class SettingsRepositoryImpl extends SettingsRepository {
+  final _speedController = StreamController<int>.broadcast();
   final SettingsLocalDataSource localDataSource;
   SettingsRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<void> setSettingsModel({required SettingsModel model}) async {
+  void setSettingsModel({required SettingsModel model}) {
+    updateStreamSpeed(model.speed);
     localDataSource.setSettingsTo(model: model);
   }
 
   @override
-  Future<SettingsModel> getSettingsModel() {
-    return localDataSource.getSettingsModel();
+  SettingsModel getSettingsModel() {
+    final settings = localDataSource.getSettingsModel();
+    updateStreamSpeed(settings.speed);
+    return settings;
   }
 
   @override
-  Future<bool> getAnimations() => localDataSource.getAnimations();
+  bool getAnimations() => localDataSource.getAnimations();
 
   @override
-  Future<bool> getLeftHanded() => localDataSource.getLeftHanded();
+  bool getLeftHanded() => localDataSource.getLeftHanded();
 
   @override
-  Future<int> getSpeed() => localDataSource.getSpeed();
+  int getSpeed() {
+    final int speed = localDataSource.getSpeed();
+    updateStreamSpeed(speed);
+    return speed;
+  }
 
   @override
-  Future<ThemeTypeModel> getTheme() => localDataSource.getTheme();
+  ThemeTypeModel getTheme() => localDataSource.getTheme();
 
   @override
-  Future<void> setAnimations({required bool value}) async => localDataSource.setAnimations(value: value);
+  void setAnimations({required bool value}) => localDataSource.setAnimations(value: value);
 
   @override
-  Future<void> setLeftHanded({required bool value}) async => localDataSource.setLeftHanded(value: value);
+  void setLeftHanded({required bool value}) => localDataSource.setLeftHanded(value: value);
 
   @override
-  Future<void> setSpeed({required int value}) async => localDataSource.setSpeed(value: value);
+  void setSpeed({required int value}) {
+    updateStreamSpeed(value);
+    localDataSource.setSpeed(value: value);
+  }
 
   @override
-  Future<void> setTheme({required ThemeTypeModel value}) async => localDataSource.setTheme(value: value);
+  void setTheme({required ThemeTypeModel value}) => localDataSource.setTheme(value: value);
+
+  @override
+  Stream<int> getSpeedStream() => _speedController.stream;
+
+  @override
+  void updateStreamSpeed(int speed) {
+    _speedController.add(speed);
+  }
 }
