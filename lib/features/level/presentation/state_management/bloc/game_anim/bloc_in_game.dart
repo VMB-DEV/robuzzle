@@ -15,7 +15,7 @@ import 'event_in_game.dart';
 class InGameBloc extends Bloc<InGameEvent, InGameState> {
   Timer _animation = Timer.periodic(const Duration(), (_) {})..cancel();
   final SettingsRepository settingsRepo;
-  int timing = 0;
+  int timing = 250;
 
   InGameBloc({required this.settingsRepo}) : super(InGameStateLoading()) {
     settingsRepo.getSpeedStream().listen(_listenToCurrentGameSpeed);
@@ -34,7 +34,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
 
   ///updating the game speed, the loop timing when Settings has been modified
   void _listenToCurrentGameSpeed(int newSpeed) {
-    Log.red('InGameBloc._listenToCurrentGameSpeed - newSpeed $newSpeed');
     timing = newSpeed;
   }
 
@@ -46,6 +45,7 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       int currentIndex = currentState.actionsList.currentIndex;
       ShipEntity currentShip = currentState.actionsList.currentShip;
       int maxIndex = currentState.actionsList.lastIndex;
+      Log.red('InGameBloc._startAnimation - start at ${currentIndex}');
       _animation = Timer.periodic(Duration(milliseconds: timing), (timer) {
         currentIndex++;
         currentShip = currentState.actionsList.list[currentIndex].map.ship;
@@ -75,7 +75,6 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
     try {
       _animation.cancel();
       final currentState = state as InGameStateLoaded;
-      // emit(InGameStateOnPause(
       emit(InGameStateOnPauseInLoop(
         level: currentState.level.copy,
         actionsList: currentState.actionsList.copyWith(currentIndex: 0),
@@ -88,19 +87,23 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
   void _updateActionListIndex(InGameEvenIndexUpdate event, Emitter<InGameState> emit) {
     try {
       final currentState = state as InGameStateLoaded;
-      final int newIndex = event.newIndex;
+      int newIndex = event.newIndex;
       if (newIndex > currentState.actionsList.lastIndex) return;
       if (currentState.actionsList.isWinIndex(newIndex)) {
         emit(InGameStateWin(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
         ));
-      } else if (_animation.isActive) {
+      } else if (_animation.isActive && event.onPause == false) {
         emit(InGameStateOnPlay(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),
         ));
       } else {
+        if (event.onPause == true && _animation.isActive) {
+          newIndex = currentState.actionsList.currentIndex;
+          _animation.cancel();
+        }
         emit(InGameStateOnPause(
           level: currentState.level.copy,
           actionsList: currentState.actionsList.copyWith(currentIndex: currentState is InGameStateMoving ? newIndex : 0),

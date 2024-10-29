@@ -43,11 +43,10 @@ class _ActionListScrollTrackerState extends State<ActionListScrollTracker> {
   }
 
   void _onScroll() {
-    // setState(() => _scrollOffset = _scrollController.offset );
     int newIndex = (_scrollController.offset / widget.itemSize.width).round();
     if (newIndex != widget.index) {
       widget.index = newIndex;
-      context.read<InGameBloc>().add(InGameEvenIndexUpdate( newIndex: newIndex, ));
+      context.read<InGameBloc>().add(InGameEvenIndexUpdate( newIndex: newIndex, onPause: true));
     }
   }
 
@@ -73,7 +72,6 @@ class _ActionListScrollTrackerState extends State<ActionListScrollTracker> {
         child: ListView.builder(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
-          // itemCount: widget.list.length + 1 + (widget.box.maxWidth/ widget.itemSize.width).toInt(),
           itemCount: widget.list.length + (widget.box.maxWidth/ widget.itemSize.width).toInt(),
           itemExtent: widget.itemSize.width,
           itemBuilder: (context, index) => SizedBox(width: widget.itemSize.width, height: widget.itemSize.height,),

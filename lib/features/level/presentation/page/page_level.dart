@@ -80,8 +80,6 @@ class LevelLayout extends StatelessWidget {
     return BlocSelector<SettingsBloc, SettingsState, SettingsStateLoaded>(
       selector: (settingsState) { return settingsState as SettingsStateLoaded; },
       builder: (context, settingsState) {
-        Log.red('LevelLayout.build - ${settingsState.settings.leftHanded}');
-
         return orientation.isLandscape
             ? _landscape(constraints, settingsState.settings.leftHanded)
             : _portrait(constraints);
