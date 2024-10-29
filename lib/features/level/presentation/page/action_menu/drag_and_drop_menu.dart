@@ -57,7 +57,7 @@ class _MenuActionCaseDragAndDropState extends DragAndDropItemState {
   @override
   Widget buildOnDragWidget() => ActionCase(
     action: widget.action,
-    size: boxSizeStatic.toInt() + 5,
+    side: boxSizeStatic.toInt() + 5,
     whiteBorders: true,
     // onTap: () {},
   );
@@ -66,7 +66,7 @@ class _MenuActionCaseDragAndDropState extends DragAndDropItemState {
   Widget buildOnDragLeftWidget() => Stack(children: [
     ActionCase(
       action: ActionEntity.noAction,
-      size: boxSizeStatic.toInt(),
+      side: boxSizeStatic.toInt(),
     ),
     Padding(
       padding: const EdgeInsetsDirectional.all(1),
@@ -84,7 +84,7 @@ class _MenuActionCaseDragAndDropState extends DragAndDropItemState {
   @override
   Widget buildStaticItem() => ActionCase(
     action: widget.action,
-    size: boxSizeStatic.toInt(),
+    side: boxSizeStatic.toInt(),
     whiteBorders: itemOnTopState,
     onTap: onStaticItemTap(),
     darkFilter: widget.darkFilter,

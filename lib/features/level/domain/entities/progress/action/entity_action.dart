@@ -47,6 +47,7 @@ class ActionEntity extends Equatable{
   bool canMergeWith(ActionEntity action) => ((isNoneInstruction && !action.isNoneInstruction) || (!isNoneInstruction && action.isNoneInstruction)) ;
   bool get isNeutralColor => color == CaseColorEntity.neutral;
   bool get isNoneInstruction => instruction == PlayerInstructionEntity.none;
+  bool get isChangeColor => instruction.isChangingMapColor;
   bool get isAction => this != noAction;
   bool get isRemoveInstruction => instruction == PlayerInstructionEntity.remove;
   ActionEntity mergeWith(ActionEntity action) => ActionEntity(

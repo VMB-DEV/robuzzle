@@ -26,7 +26,7 @@ class ActionMenuWidget extends StatelessWidget {
     padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 10),
     child: ActionCase(
       action: action,
-      size: boxSizeStatic.toInt(),
+      side: boxSizeStatic.toInt(),
       darkFilter: darkFilter,
       onTap: () {
         context.read<FunctionsBloc>().add(FunctionsEventMenuSelectAction( actionSelected: action));
