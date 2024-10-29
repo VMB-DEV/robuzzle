@@ -48,10 +48,16 @@ class InGameBloc extends Bloc<InGameEvent, InGameState> {
       Log.red('InGameBloc._startAnimation - start at ${currentIndex}');
       _animation = Timer.periodic(Duration(milliseconds: timing), (timer) {
         currentIndex++;
-        currentShip = currentState.actionsList.list[currentIndex].map.ship;
-        if (currentIndex == maxIndex) {timer.cancel();}
-        add(InGameEvenIndexUpdate(newIndex: currentIndex));
-        if ( currentState.level.map.containStopMark(currentShip.pos) ) timer.cancel();
+        try {
+          currentShip = currentState.actionsList.list[currentIndex].map.ship;
+          if (currentIndex == maxIndex) {
+            timer.cancel();
+          }
+          add(InGameEvenIndexUpdate(newIndex: currentIndex));
+          if (currentState.level.map.containStopMark(currentShip.pos)) timer.cancel();
+        } catch (e) {
+          timer.cancel();
+        }
       });
     } catch (e) { _triggerError(emit, state, event, e); }
   }

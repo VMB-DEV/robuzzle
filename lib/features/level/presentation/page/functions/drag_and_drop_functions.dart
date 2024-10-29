@@ -87,13 +87,11 @@ class _FunctionActionCaseDragAndDropState extends DragAndDropItemState {
     ),
   ]);
   @override
-  Widget buildStaticItem() => Container(
-    child: ActionCase(
-      action: widget.action,
-      side: boxSizeStatic.toInt(),
-      whiteBorders: borders ? true : itemOnTopState,
-      onTap: onStaticItemTap(),
-      darkFilter: widget.darkFilter,
-    ),
+  Widget buildStaticItem() => ActionCase(
+    action: widget.action,
+    side: boxSizeStatic.toInt(),
+    whiteBorders: borders ? true : itemOnTopState,
+    onTap: onStaticItemTap(),
+    darkFilter: widget.darkFilter,
   );
 }
