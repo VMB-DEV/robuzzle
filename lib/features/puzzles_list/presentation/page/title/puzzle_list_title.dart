@@ -34,7 +34,8 @@ class PuzzleListTitle extends StatelessWidget {
 
   TextStyle get _mainTitleStyle => TextStyle(
     color: Colors.grey.shade200,
-    fontSize: 35,
+    // fontSize: 35,
+    fontSize: screen.H * 0.05,
     shadows: [
       Shadow(
         offset: const Offset(1.2, 1.2),
