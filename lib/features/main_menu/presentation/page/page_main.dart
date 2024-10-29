@@ -121,13 +121,13 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
       ),
       animatedElement(
         forwardAnim: const StaggeredAnim(7, AnimationType.fadeScale),
-        reverseAnim: const StaggeredAnim(7, AnimationType.fadeScale),
+        reverseAnim: const StaggeredAnim(7, AnimationType.slideLeft),
         child: _creatorButton(orientation, box),
       ),
 
       animatedElement(
         forwardAnim: const StaggeredAnim(7, AnimationType.fadeScale),
-        reverseAnim: const StaggeredAnim(7, AnimationType.fadeScale),
+        reverseAnim: const StaggeredAnim(7, AnimationType.slideRight),
         child: _aboutButton(orientation, box),
       ),
     ];
