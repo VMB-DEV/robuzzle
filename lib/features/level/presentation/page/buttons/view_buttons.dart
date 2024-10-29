@@ -196,7 +196,7 @@ class ButtonsView extends StatelessWidget {
       weight: 700,
       grade: 0.5,
       opticalSize: 50 ,
-      size: constraints.maxHeight * 0.8,
+      size: constraints.maxHeight * 0.65,
       color: Colors.grey.shade100,
       shadows: const [ Shadow(color: Colors.white, blurRadius: 1.5) ],
     );
