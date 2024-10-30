@@ -1,18 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robuzzle/core/navigation/pages.dart';
 import 'package:robuzzle/core/presentation/background/widget_background.dart';
 import 'package:robuzzle/features/level/presentation/page/page_level.dart';
 import 'package:robuzzle/features/main_menu/presentation/page/page_main.dart';
 import 'package:robuzzle/uiTests.dart';
-
 import '../../features/puzzles_list/presentation/page/page_level_list.dart';
-import '../log/consolColors.dart';
 import 'observer.dart';
 
 final router = GoRouter(
   initialLocation: Pages.mainScreen.path,
-  // initialLocation: '/test',
   observers: [
     GoRouterObserver(),
   ],
