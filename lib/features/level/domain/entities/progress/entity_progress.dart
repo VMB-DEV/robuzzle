@@ -19,8 +19,7 @@ class ProgressEntity {
     id: model.id,
     isWin: model.isWin,
     functions: FunctionsEntity(values: List.generate( model.functions.values.length, (int row)
-    => model.functions.values[row].map((actionModel) => ActionEntity.from(actionModel)).toList()
-      ,),),
+    => model.functions.values[row].map((actionModel) => ActionEntity.from(actionModel)).toList() ,),),
   );
 
   @override
