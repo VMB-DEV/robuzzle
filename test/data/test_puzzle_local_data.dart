@@ -101,7 +101,7 @@ void main() {
     await Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
     final dataSource = PuzzleLocalDataSourceImpl();
 
-    final puzzle = dataSource.getPuzzleModelById(data.$1);
+    final puzzle = await dataSource.getPuzzleModelById(data.$1);
     final expectedPuzzle = PuzzleModel.parse(data.$2);
 
     expect(data.$1, puzzle.id);
