@@ -29,13 +29,13 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
 
   @override
   Future<PuzzleModel> getPuzzleModelById(int id) async {
-    // if (!Hive.isBoxOpen(HiveBoxName.puzzleBoxName)) {
-    //   Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
-    //   // throw Exception('Box not open');
-    // }
+    Log.red('PuzzleLocalDataSourceImpl.getPuzzleModelById - 1');
     Box<PuzzleModel> box = await Hiver.puzzleBox;
+    Log.red('PuzzleLocalDataSourceImpl.getPuzzleModelById - 2');
     if (box.isEmpty) { Hiver.buildPuzzleDataBase(); }
+    Log.red('PuzzleLocalDataSourceImpl.getPuzzleModelById - 3');
     final PuzzleModel? puzzle = box.get(id);
+    Log.red('PuzzleLocalDataSourceImpl.getPuzzleModelById - 4');
     if (puzzle != null) {
       return puzzle;
     } else {
