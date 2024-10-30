@@ -27,7 +27,7 @@ class Hiver {
   static void buildPuzzleDataBase() async {
     try {
       await Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
-      final box = puzzleBox;
+      final box = await puzzleBox;
       if (box.isEmpty) {
         String puzzlesDataString = await rootBundle.loadString('assets/dataPuzzles/AllPuzzles');
         List<String> listPuzzleStr = puzzlesDataString.split(PuzzleModel.puzzleSeparator);
@@ -42,8 +42,20 @@ class Hiver {
     }
   }
 
-  static Box<PuzzleModel> get puzzleBox => Hive.box<PuzzleModel>(HiveBoxName.puzzleBoxName);
-  static Future<LazyBox<ProgressModel>> get progressBox => Hive.openLazyBox(HiveBoxName.progressBoxName);
+  static Future<Box<PuzzleModel>> get puzzleBox async {
+    if (!Hive.isBoxOpen(HiveBoxName.puzzleBoxName)) {
+      return await Hive.openBox(HiveBoxName.puzzleBoxName);
+    } else {
+      return Hive.box<PuzzleModel>(HiveBoxName.puzzleBoxName);
+    }
+  }
+  static Future<Box<ProgressModel>> get progressBox async {
+    if (!Hive.isBoxOpen(HiveBoxName.progressBoxName)) {
+      return await Hive.openBox(HiveBoxName.progressBoxName);
+    } else {
+      return Hive.box<ProgressModel>(HiveBoxName.progressBoxName);
+    }
+  }
 
   initAdapters() {
     _initPuzzleAdapters();

@@ -84,40 +84,16 @@ class ShipPainter extends CustomPainter {
     pathRight.lineToOffset(bottom);
     pathRight.close();
 
-    // final pathInnerFire = Path();
-    // const startAngle = 144 * (pi / 180);
-    // const endAngle = 214 * (pi / 180);
-    // const sweepAngle = endAngle - startAngle;
-    // const sweepAngleHalf = sweepAngle / 2;
-
-    // pathOuterFire.moveTo(bottomX, centerY);
-    // pathOuterFire.arcTo( Rect.fromCircle(center: center, radius: maxHeight / 2), startAngle, sweepAngle, useCenter);
-    // pathOuterFire.close();
-    // pathInnerFire.arcTo( Rect.fromCircle(center: center, radius: size.height / 3), startAngle, sweepAngle, useCenter);
-
-    // pathInnerFire.moveTo(bottom.dx, centerY);
-    // pathInnerFire.arcTo( Rect.fromCircle(center: center, radius: innerRadius), startAngle, sweepAngle, useCenter);
-    // pathInnerFire.close();
-
-    // pathInnerFire.moveToOffset(bottom);
-    // pathInnerFire.arcTo( Rect.fromCircle(center: bottom, radius: innerRadius), startAngle, sweepAngle, useCenter);
-    // pathInnerFire.close();
-
-    const startAngle2 = 110 * (pi / 180);
-    const endAngle2 = 250 * (pi / 180);
+    const startAngle2 = 108 * (pi / 180);
+    const endAngle2 = 252 * (pi / 180);
     const sweepAngle2 = endAngle2 - startAngle2;
     final pathOuterFire = Path();
     const useCenter = false;
     pathOuterFire.moveToOffset(bottom);
-    // pathOuterFire.arcTo( Rect.fromCircle(center: bottom, radius: size.height / 6), startAngle2, sweepAngle2, useCenter);
     pathOuterFire.arcTo( Rect.fromCircle(center: bottom, radius: outerRadius), startAngle2, sweepAngle2, useCenter);
     pathOuterFire.close();
 
-
-
-    // canvas.drawPath( pathInnerFire, gradientPaintFireInner);
     canvas.drawPath( pathOuterFire, gradientPaintFireOuter);
-    // canvas.drawPath( pathLeft, shipPaint);
     canvas.drawPath( pathLeft, gradientPaintLeft);
     canvas.drawPath( pathLeft, shipOutlineLeft);
     canvas.drawPath( pathRight, gradientPaintRight);

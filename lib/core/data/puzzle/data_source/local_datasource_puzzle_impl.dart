@@ -14,7 +14,7 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
 
   @override
   Future<Set<PuzzleModel>> getPuzzleModelSetById(Set<int> idList) async {
-    Box<PuzzleModel> box = Hiver.puzzleBox;
+    Box<PuzzleModel> box = await Hiver.puzzleBox;
     Set<PuzzleModel> puzzleSet = {};
     for (int id in idList) {
       final PuzzleModel? puzzle = await box.get(id);
@@ -28,12 +28,12 @@ class PuzzleLocalDataSourceImpl extends PuzzleLocalDataSource{
   }
 
   @override
-  PuzzleModel getPuzzleModelById(int id) {
-    if (!Hive.isBoxOpen(HiveBoxName.puzzleBoxName)) {
-      Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
-      // throw Exception('Box not open');
-    }
-    Box<PuzzleModel> box = Hiver.puzzleBox;
+  Future<PuzzleModel> getPuzzleModelById(int id) async {
+    // if (!Hive.isBoxOpen(HiveBoxName.puzzleBoxName)) {
+    //   Hive.openBox<PuzzleModel>(HiveBoxName.puzzleBoxName);
+    //   // throw Exception('Box not open');
+    // }
+    Box<PuzzleModel> box = await Hiver.puzzleBox;
     if (box.isEmpty) { Hiver.buildPuzzleDataBase(); }
     final PuzzleModel? puzzle = box.get(id);
     if (puzzle != null) {
